@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ScanFileServer.Entities
 {
@@ -29,31 +30,25 @@ namespace ScanFileServer.Entities
             StreamReader sr;
             sr = File.OpenText(Arquivo);
 
-            string[] stringSeparador = new string[] { " ", "!", "@", ",", ";", ", ", "; ", "#", "$", "%", "&", "*", "(", ")", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ":", ": ", "-", " - ", " -", "- " };
-
-
             while (!sr.EndOfStream)
             {
-                string palavras = sr.ReadLine();
-                string[] cortaPalavra = palavras.Split(stringSeparador, StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string obj in cortaPalavra)
+                string linhaDoArquivo = sr.ReadLine();
+                foreach (Match match in Regex.Matches(linhaDoArquivo, PalavraProcurada, RegexOptions.IgnoreCase))
                 {
-                    if (obj.StartsWith(PalavraProcurada, StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        cont++;
-                        ConjuntoDeArquivos.Add(Arquivo);
-                    }
+                    cont++;
+                    ConjuntoDeArquivos.Add(Arquivo);
                 }
             }
+
             if (cont > 0)
             {
-                imprime = "\nA palavra foi encontrada " + cont + " veze(s).\n\n";                
+                imprime = "\nA palavra foi encontrada " + cont + " vez(es).\n\n";                
             }
             else
             {
                 imprime = "A palavra não foi encontrada.";
             }
+            sr.Close();
         }
 
         public override string ToString()
@@ -69,7 +64,7 @@ namespace ScanFileServer.Entities
                     sbo.AppendLine();
                 }
 
-            }
+            }           
             return sbo.ToString();
         }
     }
