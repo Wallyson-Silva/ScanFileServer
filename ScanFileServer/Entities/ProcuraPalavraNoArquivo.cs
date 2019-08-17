@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace ScanFileServer.Entities
 {
-    class ProcuraPalavraNoArquivo
+    class ProcuraPalavraNoArquivo : ArquivosQueConteemAPalavra
     {
         public string CaminhoDoDiretorio { get; set; }
         public string PalavraProcurada { get; set; }
@@ -23,26 +23,24 @@ namespace ScanFileServer.Entities
 
         int cont = 0;
         string imprime;
-        HashSet<string> ConjuntoDeArquivos = new HashSet<string>();
-
-        public void PercorreArquivo(string Arquivo)
+        ArquivosQueConteemAPalavra arquivosQueConteemAPalavra = new ArquivosQueConteemAPalavra();
+        public void PercorreArquivo(string ArquivoAtual)
         {
             StreamReader sr;
-            sr = File.OpenText(Arquivo);
-
+            sr = File.OpenText(ArquivoAtual);
             while (!sr.EndOfStream)
             {
-                string linhaDoArquivo = sr.ReadLine();
+                string linhaDoArquivo = sr.ReadLine();                
                 foreach (Match match in Regex.Matches(linhaDoArquivo, PalavraProcurada, RegexOptions.IgnoreCase))
                 {
                     cont++;
-                    ConjuntoDeArquivos.Add(Arquivo);
+                    arquivosQueConteemAPalavra.ConjuntoDeArquivos.Add(ArquivoAtual);
                 }
             }
 
             if (cont > 0)
             {
-                imprime = "\nA palavra foi encontrada " + cont + " vez(es).\n\n";                
+                imprime = "\nA palavra foi encontrada " + cont + " vez(es).\n\n";
             }
             else
             {
@@ -53,18 +51,13 @@ namespace ScanFileServer.Entities
 
         public override string ToString()
         {
-
+        
             StringBuilder sbo = new StringBuilder();
             sbo.AppendLine(imprime);
             if (cont>0)
             {
-                foreach(string caminhoDoArquivo in ConjuntoDeArquivos)
-                {
-                    sbo.AppendLine(caminhoDoArquivo);
-                    sbo.AppendLine();
-                }
-
-            }           
+                arquivosQueConteemAPalavra.ImprimeConjuntoDeArquivos();
+            }
             return sbo.ToString();
         }
     }
