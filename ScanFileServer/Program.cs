@@ -32,23 +32,8 @@ namespace ScanFileServer
 
             Console.WriteLine(x);
 
-            Console.WriteLine("Deseja abrir algum arquivo (s/n)?");
-            bool continuarAbrindo = true;
-            do
-            {
-                char abrirArquivo = char.Parse(Console.ReadLine());
-                if (abrirArquivo == 's' || abrirArquivo == 'S')
-                {
-                    Console.Write("Digite o caminho do arquivo: ");
-                    string caminhoDoArquivo = Console.ReadLine();
-                    x.AbrirArquivoDesejado(caminhoDoArquivo);                    
-                }
-                else
-                {
-                    continuarAbrindo = false;
-                }
+            x.Menu(x);
 
-            } while (continuarAbrindo);
 
         }
     }
