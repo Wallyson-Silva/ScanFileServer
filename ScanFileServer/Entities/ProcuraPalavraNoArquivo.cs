@@ -22,6 +22,7 @@ namespace ScanFileServer.Entities
 
         int cont = 0;
         string imprime;
+        HashSet<string> ConjuntoDeArquivos = new HashSet<string>();
 
         public void PercorreArquivo(string Arquivo)
         {
@@ -41,24 +42,35 @@ namespace ScanFileServer.Entities
                     if (obj.StartsWith(PalavraProcurada, StringComparison.CurrentCultureIgnoreCase))
                     {
                         cont++;
+                        ConjuntoDeArquivos.Add(Arquivo);
                     }
                 }
             }
             if (cont > 0)
             {
-                 imprime = "\nA palavra foi encontrada " + cont + " veze(s).\n\n"
-                            + Arquivo;
+                imprime = "\nA palavra foi encontrada " + cont + " veze(s).\n\n";                
             }
             else
             {
-                 imprime = "A palavra não foi encontrada.";
+                imprime = "A palavra não foi encontrada.";
             }
         }
 
         public override string ToString()
         {
-            return imprime;
-        }
 
+            StringBuilder sbo = new StringBuilder();
+            sbo.AppendLine(imprime);
+            if (cont>0)
+            {
+                foreach(string caminhoDoArquivo in ConjuntoDeArquivos)
+                {
+                    sbo.AppendLine(caminhoDoArquivo);
+                    sbo.AppendLine();
+                }
+
+            }
+            return sbo.ToString();
+        }
     }
-}         
+}
