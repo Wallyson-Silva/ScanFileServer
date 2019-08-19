@@ -14,7 +14,7 @@ namespace ScanFileServer
             Console.Write("Entre com a palavra procurada: ");
             string palavraProcurada = Console.ReadLine();
 
-            ProcuraPalavraNoArquivo x = new ProcuraPalavraNoArquivo(caminhoDoDiretorio, palavraProcurada);
+            ProcuraPalavraNoArquivo x = new ProcuraPalavraNoArquivo(palavraProcurada);
 
             try
             {
@@ -29,11 +29,9 @@ namespace ScanFileServer
             {
                 Console.WriteLine(e.Message);
             }
-
-            Console.WriteLine(x);
-
+            
+            Console.WriteLine(x);            
             x.Menu(x);
-
 
         }
     }

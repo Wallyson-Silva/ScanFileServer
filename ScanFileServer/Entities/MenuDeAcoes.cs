@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ScanFileServer.Entities
 {
@@ -8,39 +6,53 @@ namespace ScanFileServer.Entities
     {
         public void Menu(ProcuraPalavraNoArquivo x)
         {
-            bool continuarAbrindo = true;
+            bool continuar = true;
             do
             {
-                Console.WriteLine("Deseja abrir algum arquivo (s/n)?");
-                char abrirArquivo = char.Parse(Console.ReadLine());
-                if (abrirArquivo == 's' || abrirArquivo == 'S')
+                Console.WriteLine("Para abrir um arquivo digite 1:\nPara excluir UM arquivo digite 2:\nPara excluir TODOS os arquivo digite 3:\nPara sair digite 4:\n");
+
+                string opcaoEscolhida = Console.ReadLine();
+
+                while (opcaoEscolhida != "1" && opcaoEscolhida != "2" && opcaoEscolhida != "3" && opcaoEscolhida != "4")
                 {
-                    Console.Write("Digite o caminho do arquivo: ");
-                    x.AbrirArquivoDesejado(Console.ReadLine());
-                }
-                else
-                {
-                    continuarAbrindo = false;
+                    Console.Write("Opção inválida. Digite novamante: ");
+                    opcaoEscolhida = Console.ReadLine();
                 }
 
-            } while (continuarAbrindo);
-
-            bool continuarExcluindo = true;
-            do
-            {
-                Console.WriteLine("Deseja excluir algum arquivo (s/n)?");
-                char excluirArquivo = char.Parse(Console.ReadLine());
-                if (excluirArquivo == 's' || excluirArquivo == 'S')
+                switch (opcaoEscolhida)
                 {
-                    Console.Write("Digite o caminho do arquivo: ");
-                    x.DeletarArquivoDesejado(Console.ReadLine());
-                }
-                else
-                {
-                    continuarExcluindo = false;
-                }
+                    case "1":
+                        Console.Write("Digite o caminho do arquivo que deseja abrir: ");
+                        x.AbrirArquivoDesejado(Console.ReadLine());
+                        Console.Clear();
+                        break;
+                    case "2":
+                        Console.Write("Digite o caminho do arquivo que exluir abrir: ");
+                        x.DeletarArquivoDesejado(Console.ReadLine());
+                        Console.Clear();
+                        break;                       
+                    case "3":
+                        Console.Write("Tem certeza que deseja exluir todos os arquivos (s/n)? ");
+                        char resposta = char.Parse(Console.ReadLine());
+                        while (resposta != 's' && resposta != 'n')
+                        {
+                            Console.Write("Opção inválida. Digite novamante: ");
+                            resposta = char.Parse(Console.ReadLine());
+                        }
+                        if (resposta == 's')
+                        {
+                            x.DeletarTodosOsArquivos();
+                            
+                        }
+                        Console.Clear();
+                        Console.WriteLine("Arquivos deletados!\n");
+                        break;                   
+                    default:
+                        continuar = false;
+                        break;
 
-            } while (continuarExcluindo);
+                }
+            } while (continuar);
         }
     }
 }
